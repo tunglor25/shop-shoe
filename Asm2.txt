@@ -1,0 +1,9 @@
+asm 2
+- tạo layout master (header, footer, sidebar)
+- trang chủ (load tên sản phẩm) mới nhất lên đầu
+- chọn 1 sản phẩm sang trang chi tiết(bên dưới -> 5 sản phẩm cùng danh mục)
+- trang chủ tạo phần tìm kiếm
+- lọc giá tiền -- dưới 500
+		-- 500-1tr
+		-- 1000 - 5000
+		trên 5tr
