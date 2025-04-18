@@ -195,4 +195,34 @@ class ProductController extends Controller
             'isSearchPage' => false,
         ]);
     }
+
+    public function login( Request $request) 
+    {
+        $title = 'Đăng Nhập';
+        $query = Product::with(['category' => function($q) {
+            $q->where('status', 1);
+        }])
+        ->where('status', 1);
+
+    if ($request->has('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
+        });
+    }
+
+    // Chỉ lấy danh mục đang hoạt động
+    $categories = Category::where('status', 1)->get();
+
+    // chỉ lấy slide đang hoạt động
+    $slides = Slide::where('status', 1)
+        ->orderByDesc('id')
+        ->get();
+        // dd($slides);
+
+    $products = $query->orderByDesc('id')->paginate(6);
+
+    return view('client.login', compact('title', 'products', 'categories', 'slides'));
+    }
 }

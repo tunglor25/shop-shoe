@@ -241,7 +241,7 @@
             --glass: rgba(255, 255, 255, 0.05);
         }
 
-        container {
+        body {
             background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 100%);
         }
 

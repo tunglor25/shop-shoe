@@ -81,7 +81,7 @@
 </script>
 
 <body>
-    @include('client.layouts.partials.nav')
+    @include('client.layouts.partials.navLogin')
 
     <div class="container-fluid">
         <div class="row">

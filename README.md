@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://solemate.com" target="_blank">
-    <img src="https://solemate.com/images/logo.png" width="400" alt="SoleMate - Đẳng cấp từng bước chân">
+    <img src="https://i.pinimg.com/736x/c9/91/fe/c991fee48106e8a9442340a9bf9df3b5.jpg" width="400" alt="SoleMate - Đẳng cấp từng bước chân">
   </a>
 </p>
 
@@ -57,7 +57,7 @@ Chúng tôi tự hào với đội ngũ:
 4. **Tư vấn 24/7** bởi chuyên gia giày
 
 <p align="center">
-  <img src="https://solemate.com/images/store.jpg" width="600" alt="Không gian sang trọng tại SoleMate">
+  <img src="https://i.pinimg.com/736x/c9/91/fe/c991fee48106e8a9442340a9bf9df3b5.jpg" width="600" alt="Không gian sang trọng tại SoleMate">
 </p>
 
 ## Liên Hệ

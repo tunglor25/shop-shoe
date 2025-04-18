@@ -486,8 +486,14 @@
     <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                {{-- thông báo lỗi chưa dang nhap --}}
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Thông báo:</strong> Bạn cần đăng nhập để thực hiện chức năng này.
+                </div>
                 <div class="modal-header">
-                    <h5 class="modal-title">Welcome Back!</h5>
+
+                    <h5 class="modal-title">Wellcome Back!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     @if ($errors->any())
                         <div class="alert alert-danger w-100">{{ $errors->first() }}</div>
@@ -550,10 +556,21 @@
         </div>
     </div>
 
+
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Tự động mở modal đăng nhập khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu có thông báo lỗi đăng nhập
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+
+            // Hoặc nếu bạn muốn luôn mở modal (không cần điều kiện)
+            // const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            // loginModal.show();
+        });
         document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.querySelector('.luxury-navbar');
             const logo = document.querySelector('.navbar-brand img');

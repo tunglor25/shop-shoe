@@ -38,7 +38,7 @@ Route::get('/products/{product}', [ClientProductController::class, 'show'])->nam
 Route::middleware('guest')->group(function () {
     // Hiển thị form đăng nhập
     Route::get('/login', function () {
-        return view('auth.login');
+        return view('client.login');
     })->name('login');
 
     // Xử lý submit form đăng nhập

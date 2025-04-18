@@ -1,11 +1,15 @@
-@extends('client.layouts.app')
+@extends('client.layouts.login')
 
 @section('title')
     {{ $title }}
 @endsection
 
 {{-- thông báo chưa dăng nhập  --}}
-
+@if (session('messageLogin'))
+    <div class="alert alert-danger">
+        {{ session('messageLogin') }}
+    </div>
+@endif
 
 
 

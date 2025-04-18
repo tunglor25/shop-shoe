@@ -98,6 +98,17 @@
 </div>
 
 <style>
+    :root {
+            --primary: #0a1d37;
+            --secondary: #ffd700;
+            --accent: #00c2ff;
+            --text: #f8f8f8;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 100%);
+        }
     /* Custom Gold Color */
     .text-gold {
         color: #d4af37 !important;

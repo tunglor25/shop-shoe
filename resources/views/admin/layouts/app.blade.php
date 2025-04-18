@@ -40,7 +40,7 @@
             display: none;
         }
         /* Màu vàng chủ đạo */
-        
+
 
         .text-gold-soft {
             color: rgba(212, 175, 55, 0.7) !important;
@@ -122,9 +122,9 @@
             </main>
         </div>
     </div>
-
-
     @include('admin.layouts.partials.footer')
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
