@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Slide;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -18,7 +19,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $title = 'Trang Danh Sách Sản Phẩm';
-        // Lấy sản phẩm có trạng thái là 1 (hoạt động) và danh mục hoạt động
+        // Lấy sản phẩm có trạng thái là 1 (hoạt động) và danh mục hoạt động\
+        // dd(Auth::user()->avatar);
         $query = Product::with(['category' => function($q) {
                 $q->where('status', 1);
             }])
@@ -196,7 +198,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function login( Request $request) 
+    public function login( Request $request)
     {
         $title = 'Đăng Nhập';
         $query = Product::with(['category' => function($q) {

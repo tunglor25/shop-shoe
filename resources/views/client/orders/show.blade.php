@@ -30,7 +30,19 @@
                 <div class="info-item">
                     <i class="fas fa-info-circle text-gold-soft me-2"></i>
                     <span class="text-light">Trạng thái:</span>
-                    <span class="badge bg-gold text-dark">{{ ucfirst($order->status) }}</span>
+                    <span class="text-gold">
+                        @if ($order->status == 'pending')
+                            ĐANG XỬ LÝ
+                        @elseif($order->status == 'processing')
+                            ĐANG XỬ LÝ
+                        @elseif($order->status == 'shipped')
+                            ĐANG VẬN CHUYỂN
+                        @elseif($order->status == 'delivered')
+                            ĐÃ GIAO HÀNG
+                        @elseif($order->status == "cancelled")
+                            ĐÃ HỦY
+                        @endif
+                    </span>
                 </div>
                 <div class="info-item">
                     <i class="fas fa-coins text-gold-soft me-2"></i>

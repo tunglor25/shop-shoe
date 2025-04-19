@@ -1,7 +1,18 @@
 <?php
+// nếu người dùng đã đăng nhập, lấy thông tin avatar từ session
+if (Auth::check()) {
+    $user = Auth::user();
+    $avatar = $user->avatar; // Giả sử bạn đã lưu đường dẫn avatar trong trường 'avatar' của bảng users
+} else {
+    $avatar = null; // Nếu chưa đăng nhập, không có avatar
+}
 
-//
 ?>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxury Shop</title>
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Font Awesome -->
@@ -80,9 +91,8 @@
         text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
     }
 
-    /* Search box - ĐÃ SỬA LẠI */
+    /* Search box */
     .luxury-navbar .search-box {
-        /* min-width: 200px; */
         width: 250px;
         border-radius: 30px;
         overflow: hidden;
@@ -123,7 +133,7 @@
         background-color: var(--gold-color);
     }
 
-    /* Action buttons - ĐÃ SỬA LẠI */
+    /* Action buttons */
     .luxury-navbar .action-buttons {
         display: flex;
         align-items: center;
@@ -178,34 +188,103 @@
         transition: all var(--transition-time) ease;
     }
 
-    /* User info */
-    .luxury-navbar .user-info {
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
-
-    .luxury-navbar .logout-btn {
+    /* User dropdown styles */
+    .user-dropdown {
         background: none;
         border: none;
         color: var(--gold-color);
         padding: 8px 12px;
         transition: all var(--transition-time) ease;
-        border-radius: 30px;
         display: flex;
         align-items: center;
-        font-size: 14px;
+        border-radius: 30px;
         white-space: nowrap;
+        font-size: 14px;
     }
 
-    .luxury-navbar .logout-btn:hover {
+    .user-dropdown:hover {
         color: white;
         background-color: rgba(212, 175, 55, 0.2);
+        transform: translateY(-2px);
     }
 
-    .luxury-navbar .logout-btn i {
-        margin-right: 6px;
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+        object-fit: cover;
+        border: 1px solid rgba(212, 175, 55, 0.5);
         transition: all var(--transition-time) ease;
+        border-radius: 50%;
+    }
+
+    .user-dropdown:hover .user-avatar {
+        border-color: var(--gold-color);
+        transform: scale(1.05);
+    }
+
+    .avatar-placeholder {
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(212, 175, 55, 0.2);
+        color: var(--gold-color);
+        border-radius: 50%;
+        font-weight: bold;
+        transition: all var(--transition-time) ease;
+    }
+
+    .user-dropdown:hover .avatar-placeholder {
+        background-color: var(--gold-color);
+        color: var(--dark-bg);
+    }
+
+    .dropdown-menu {
+        background-color: var(--dark-bg);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        animation: fadeInDown 0.3s ease forwards;
+    }
+
+    .dropdown-item {
+        color: white;
+        padding: 8px 16px;
+        transition: all var(--transition-time) ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: var(--gold-color);
+        color: var(--dark-bg);
+        transform: translateX(5px);
+    }
+
+    .dropdown-divider {
+        border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .dropdown-toggle::after {
+        margin-left: 8px;
+        color: var(--gold-color);
+        transition: all var(--transition-time) ease;
+    }
+
+    .user-dropdown:hover .dropdown-toggle::after {
+        color: white;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Offcanvas sidebar */
@@ -341,109 +420,179 @@
         max-width: 60px;
         text-align: center;
     }
+
+    /* Thêm style cho loading spinner */
+    .btn-loading .spinner-border {
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    /* Style cho error container */
+    #registerErrors {
+        margin-bottom: 1rem;
+    }
+
+    /* Additional styles for better UX */
+    .nav-action {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .nav-action:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 3px 10px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Form input focus effects */
+    .form-control:focus {
+        border-color: var(--gold-color);
+        box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+    }
+
+    /* Button hover effects */
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .luxury-navbar .search-container {
+            order: 1;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .luxury-navbar .action-buttons {
+            order: 2;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .auth-buttons {
+            gap: 5px;
+        }
+
+        .nav-action span {
+            display: none;
+        }
+
+        .nav-action i {
+            margin-right: 0;
+            font-size: 1.2rem;
+        }
+    }
+
+    /* Loading spinner for form submission */
+    .loading-spinner {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-left: 8px;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .dropdown-menu-luxury {
+        background-color: var(--dark-bg);
+        border: 1px solid rgba(212, 175, 55, 0.5);
+        box-shadow: 0 5px 25px rgba(212, 175, 55, 0.2);
+        min-width: 280px;
+        padding: 0;
+        overflow: hidden;
+        animation: fadeInDown 0.3s ease forwards;
+    }
+
+    .dropdown-header {
+        padding: 12px 16px;
+        background: rgba(212, 175, 55, 0.1);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .dropdown-item {
+        color: #fff;
+        padding: 10px 16px;
+        transition: all 0.3s ease;
+        position: relative;
+        border-left: 3px solid transparent;
+    }
+
+    .dropdown-item:hover {
+        background-color: rgba(212, 175, 55, 0.1);
+        color: var(--gold-color);
+        border-left: 3px solid var(--gold-color);
+        padding-left: 20px;
+    }
+
+    .dropdown-item i {
+        width: 20px;
+        text-align: center;
+    }
+
+    .logout-item:hover {
+        background-color: rgba(255, 0, 0, 0.1) !important;
+        color: #ff6b6b !important;
+    }
+
+    .text-gold {
+        color: var(--gold-color);
+        opacity: 0.8;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid rgba(212, 175, 55, 0.5);
+    }
+
+    .avatar-placeholder {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(212, 175, 55, 0.2);
+        color: var(--gold-color);
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 14px;
+    }
 </style>
+@if (session('messageLogin'))
+    <script>
+        alert('{{ session('messageLogin') }}');
+    </script>
+@endif
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark luxury-navbar sticky-top">
+    <div class="container">
+        <!-- Sidebar toggle button -->
+        <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#luxurySidebar"
+            aria-controls="luxurySidebar">
+            <i class="fas fa-bars"></i>
+        </button>
 
-<body>
-    @if (session('messageLogin'))
-        <script>
-            alert('{{ session('messageLogin') }}');
-        </script>
-    @endif
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark luxury-navbar sticky-top">
-        <div class="container">
-            <!-- Sidebar toggle button -->
-            <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#luxurySidebar"
-                aria-controls="luxurySidebar">
-                <i class="fas fa-bars"></i>
-            </button>
+        <!-- Logo -->
+        <a class="navbar-brand me-auto" href="#">
+            <img src="{{ asset('css/logo.png') }}" class="gold-pulse" style="max-height: 50px;" alt="Luxury Logo">
+        </a>
 
-            <!-- Logo -->
-            <a class="navbar-brand me-auto" href="#">
-                <img src="{{ asset('css/logo.png') }}" class="gold-pulse" style="max-height: 50px;" alt="Luxury Logo">
-            </a>
-
-            <!-- Main menu - visible on lg screens -->
-            <div class="d-none d-lg-flex mx-auto">
-                <ul class="navbar-nav">
-                    <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('home') }}">TRANG CHỦ</a>
-                    </li>
-                    <li class="nav-item {{ request()->routeIs('shop') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('shop') }}">SẢN PHẨM</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">DỊCH VỤ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">BỘ SƯU TẬP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">LIÊN HỆ</a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Search and action buttons - ĐÃ SỬA LẠI -->
-            <div class="d-flex align-items-center">
-                <!-- Search box -->
-                <div class="search-container">
-                    <form action="{{ route('search') }}" method="GET" class="search-box d-flex">
-                        <input type="text" id="search" name="query" class="form-control search-input"
-                            placeholder="Tìm kiếm..." value="{{ request('query') }}">
-                        <button type="submit" class="btn btn-outline-secondary">
-                            <i class="fas fa-search"></i>
-                    </form>
-                </div>
-
-                <!-- Action buttons container -->
-                <div class="action-buttons">
-                    <!-- Giỏ hàng -->
-                    {{-- <a href="javascript:void(0);" class="nav-action cart-btn animate__animated animate__fadeIn"
-                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"> --}}
-                    <a href="http://127.0.0.1:8000/cart" class="nav-action cart-btn-animate">
-
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Giỏ hàng</span>
-                        {{-- <span class="cart-count">{{  }}</span> --}}
-                    </a>
-
-
-                    <!-- Phần đăng nhập/đăng xuất -->
-                    @auth
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="nav-action logout-btn">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Đăng xuất</span>
-                            </button>
-                        </form>
-                    @else
-                        <button type="button" class="nav-action login-btn" data-bs-toggle="modal"
-                            data-bs-target="#loginModal">
-                            <i class="fas fa-user"></i>
-                            <span>Đăng nhập</span>
-                        </button>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Offcanvas Sidebar -->
-    <div class="offcanvas offcanvas-start offcanvas-luxury" tabindex="-1" id="luxurySidebar"
-        aria-labelledby="luxurySidebarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="luxurySidebarLabel">Menu</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
+        <!-- Main menu - visible on lg screens -->
+        <div class="d-none d-lg-flex mx-auto">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('home') }}">TRANG CHỦ</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ request()->routeIs('shop') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('shop') }}">SẢN PHẨM</a>
                 </li>
                 <li class="nav-item">
@@ -456,236 +605,515 @@
                     <a class="nav-link" href="#">LIÊN HỆ</a>
                 </li>
             </ul>
+        </div>
 
-            <!-- User menu for mobile -->
-            <hr class="my-4" style="border-color: rgba(212, 175, 55, 0.3);">
-            <div class="mobile-actions">
-                <a href="#" class="nav-action cart-btn">
+        <!-- Search and action buttons -->
+        <div class="d-flex align-items-center">
+            <!-- Search box -->
+            <div class="search-container">
+                <form action="{{ route('search') }}" method="GET" class="search-box d-flex">
+                    <input type="text" id="search" name="query" class="form-control search-input"
+                        placeholder="Tìm kiếm..." value="{{ request('query') }}">
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Action buttons container -->
+            <div class="action-buttons">
+                <!-- Giỏ hàng -->
+                <a href="http://127.0.0.1:8000/cart" class="nav-action cart-btn-animate">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Giỏ hàng</span>
-                    <span class="cart-count">3</span>
+                    {{-- <span class="cart-count">{{ Cart::count() }}</span> --}}
                 </a>
+
+                <!-- Phần đăng nhập/đăng xuất -->
                 @auth
-                    <form action="{{ route('logout') }}" method="POST" class="nav-action">
-                        @csrf
-                        <button type="submit" class="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Đăng xuất</span>
+                    <div class="dropdown user-dropdown ms-2">
+                        <button class="btn dropdown-toggle d-flex align-items-center py-2 px-3" type="button"
+                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <!-- Hiển thị avatar nếu có -->
+                            <img src="{{ $avatar ? asset('storage/' . $avatar) : asset('storage/default-image.png') }}"
+                                class="user-avatar me-2" alt="User Avatar">
+                            <span class="d-none d-lg-inline">{{ Auth::user()->name }}</span>
                         </button>
-                    </form>
+
+                        <!-- Dropdown menu -->
+                        <ul class="dropdown-menu dropdown-menu-luxury dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li class="dropdown-header">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ $avatar ? asset('storage/' . $avatar) : asset('storage/default-image.png') }}"
+                                        class="user-avatar me-2" alt="User Avatar">
+                                    <div>
+                                        <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+                                        <small class="text-gold">{{ Auth::user()->email }}</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('user.account') }}">
+                                    <i class="fas fa-user-circle me-2"></i>Trang cá nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">
+                                    <i class="fas fa-shopping-bag me-2"></i>Đơn hàng của tôi
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-heart me-2"></i>Yêu thích
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cog me-2"></i>Cài đặt
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item logout-item">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 @else
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        Đăng nhập
+                    <button type="button" class="nav-action login-btn" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">
+                        <i class="fas fa-user"></i>
+                        <span>Đăng nhập</span>
                     </button>
                 @endauth
             </div>
         </div>
     </div>
+</nav>
 
-    {{-- form login --}}
-    <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Welcome Back!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    @if ($errors->any())
-                        <div class="alert alert-danger w-100">{{ $errors->first() }}</div>
-                    @endif
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('login') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">Email address</label>
-                            <div class="input-group">
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email">
-                                <span class="input-group-text">
-                                    <i class="fas fa-envelope"></i>
-                                </span>
-                            </div>
+<!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start offcanvas-luxury" tabindex="-1" id="luxurySidebar"
+    aria-labelledby="luxurySidebarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="luxurySidebarLabel">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('home') }}">TRANG CHỦ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('shop') }}">SẢN PHẨM</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">DỊCH VỤ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">BỘ SƯU TẬP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">LIÊN HỆ</a>
+            </li>
+        </ul>
+
+        <!-- User menu for mobile -->
+        <hr class="my-4" style="border-color: rgba(212, 175, 55, 0.3);">
+        <div class="mobile-actions">
+            <a href="#" class="nav-action cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Giỏ hàng</span>
+                {{-- <span class="cart-count">{{ Cart::count() }}</span> --}}
+            </a>
+            @auth
+                <form action="{{ route('logout') }}" method="POST" class="nav-action">
+                    @csrf
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Đăng xuất</span>
+                    </button>
+                </form>
+            @else
+                <button type="button" class="nav-action login-btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-user"></i>
+                    <span>Đăng nhập</span>
+                </button>
+            @endauth
+        </div>
+    </div>
+</div>
+
+<!-- Modal Đăng Nhập -->
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Đăng Nhập</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" name="email" value="{{ old('email') }}"
+                                required>
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Enter your password">
-                                <span class="input-group-text password-toggle">
-                                    <i class="fas fa-eye"></i>
-                                </span>
-                            </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="password" required>
+                            <span class="input-group-text password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </span>
                         </div>
+                    </div>
 
+                    <div class="mb-3 d-flex justify-content-between">
                         <div class="form-check">
-                            <div>
-                                <input type="checkbox" class="form-check-input" id="remember">
-                                <label class="form-check-label" for="remember">Remember me</label>
-                            </div>
-                            <a href="#" class="text-decoration-none">Forgot password?</a>
+                            <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                            <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
                         </div>
+                        <a href="#" class="text-decoration-none">Quên mật khẩu?</a>
+                    </div>
 
-                        <button type="submit" class="btn btn-login btn-primary w-100">Sign In</button>
+                    <button type="submit" class="btn btn-primary w-100">Đăng Nhập</button>
 
-                        <div class="divider">
-                            <span>or continue with</span>
-                        </div>
+                    <div class="divider my-3">
+                        <span>hoặc</span>
+                    </div>
 
-                        <div class="social-login">
-                            <button type="button" class="btn btn-social">
-                                <i class="fab fa-google"></i>Google
-                            </button>
-                            <button type="button" class="btn btn-social">
-                                <i class="fab fa-facebook-f"></i>Facebook
-                            </button>
-                        </div>
+                    <div class="social-login d-flex gap-2">
+                        <button type="button" class="btn btn-outline-danger flex-grow-1">
+                            <i class="fab fa-google me-2"></i>Google
+                        </button>
+                        <button type="button" class="btn btn-outline-primary flex-grow-1">
+                            <i class="fab fa-facebook-f me-2"></i>Facebook
+                        </button>
+                    </div>
 
-                        <div class="register-link">
-                            Don't have an account? <a href="#" class="text-decoration-none">Register now</a>
-                        </div>
-                    </form>
-                </div>
+                    <div class="text-center mt-3">
+                        Chưa có tài khoản?
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal"
+                            data-bs-target="#registerModal" data-bs-dismiss="modal">
+                            Đăng ký ngay
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Modal Đăng Ký -->
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Đăng Ký Tài Khoản</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Container hiển thị lỗi AJAX -->
+                <div id="registerErrors"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.querySelector('.luxury-navbar');
-            const logo = document.querySelector('.navbar-brand img');
+                <!-- Thông báo lỗi từ BE khi reload trang -->
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-            // Scroll effect
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                    logo.style.maxHeight = '40px';
+                <form id="registerForm" action="{{ route('register') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tên đăng nhập *</label>
+                            <input type="text" class="form-control" name="username"
+                                value="{{ old('username') }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Họ và tên *</label>
+                            <input type="text" class="form-control" name="full_name"
+                                value="{{ old('full_name') }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email *</label>
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Mật khẩu *</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Xác nhận mật khẩu *</label>
+                            <input type="password" class="form-control" name="password_confirmation">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Số điện thoại *</label>
+                            <input type="tel" class="form-control" name="phone" value="{{ old('phone') }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Giới tính</label>
+                            <select class="form-select" name="gender">
+                                <option value="">Chọn giới tính</option>
+                                <option value="M" {{ old('gender') == 'M' ? 'selected' : '' }}>Nam</option>
+                                <option value="F" {{ old('gender') == 'F' ? 'selected' : '' }}>Nữ</option>
+                                <option value="O" {{ old('gender') == 'O' ? 'selected' : '' }}>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms"
+                            {{ old('agreeTerms') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="agreeTerms">
+                            Tôi đồng ý với <a href="#" class="text-decoration-none">điều khoản sử dụng</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100" id="registerSubmitBtn">Đăng Ký</button>
+
+                    <div class="text-center mt-3">
+                        Đã có tài khoản?
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal"
+                            data-bs-target="#loginModal" data-bs-dismiss="modal">
+                            Đăng nhập ngay
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Hàm xóa backdrop
+    function removeAllBackdrops() {
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+    }
+
+    // Toggle mật khẩu
+    document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.closest('.input-group').querySelector('input');
+            const icon = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    });
+
+    // Xử lý chuyển modal và đóng backdrop
+    document.querySelectorAll('[data-bs-target="#registerModal"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            bootstrap.Modal.getInstance(document.getElementById('loginModal'))?.hide();
+            removeAllBackdrops();
+        });
+    });
+
+    document.querySelectorAll('[data-bs-target="#loginModal"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            bootstrap.Modal.getInstance(document.getElementById('registerModal'))?.hide();
+            removeAllBackdrops();
+        });
+    });
+
+    // Đảm bảo xóa backdrop khi đóng modal
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('hidden.bs.modal', removeAllBackdrops);
+    });
+
+    // Xử lý form đăng ký bằng AJAX
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+        const submitBtn = document.getElementById('registerSubmitBtn');
+        const originalBtnText = submitBtn.innerHTML;
+        const errorContainer = document.getElementById('registerErrors');
+
+        try {
+            // Hiển thị loading
+            submitBtn.innerHTML =
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...';
+            submitBtn.classList.add('btn-loading');
+            submitBtn.disabled = true;
+            errorContainer.innerHTML = '';
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Đăng ký thành công - reload trang
+                window.location.reload();
+            } else {
+                // Hiển thị lỗi bằng tiếng Việt
+                let errorHtml = '<div class="alert alert-danger"><ul class="mb-0">';
+
+                if (data.errors) {
+                    for (const key in data.errors) {
+                        data.errors[key].forEach(error => {
+                            // Chuyển đổi thông báo lỗi sang tiếng Việt
+                            const vietnameseError = translateErrorToVietnamese(key, error);
+                            errorHtml += `<li>${vietnameseError}</li>`;
+                        });
+                    }
+                } else if (data.message) {
+                    errorHtml += `<li>${translateErrorToVietnamese('general', data.message)}</li>`;
                 } else {
-                    navbar.classList.remove('scrolled');
-                    logo.style.maxHeight = '45px';
+                    errorHtml += '<li>Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.</li>';
                 }
-            });
 
-            // Optimized gold particles effect
-            const goldActions = document.querySelectorAll('.nav-action, .nav-link, .btn');
-            let activeParticles = 0;
-            const maxParticles = 15; // Giới hạn số particles
+                errorHtml += '</ul></div>';
+                errorContainer.innerHTML = errorHtml;
 
-            goldActions.forEach(element => {
-                element.addEventListener('mouseover', function(e) {
-                    if (activeParticles < maxParticles) {
-                        createParticles(e.currentTarget, e.clientX, e.clientY);
-                    }
+                // Cuộn lên đầu để xem lỗi
+                errorContainer.scrollIntoView({
+                    behavior: 'smooth'
                 });
-            });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorContainer.innerHTML =
+                '<div class="alert alert-danger">Có lỗi xảy ra, vui lòng thử lại</div>';
+        } finally {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.classList.remove('btn-loading');
+            submitBtn.disabled = false;
+        }
+    });
 
-            function createParticles(element, x, y) {
-                const rect = element.getBoundingClientRect();
-                const colors = ['#D4AF37', '#FFD700', '#F8E6C0', '#FFEC8B'];
+    // Hàm chuyển đổi thông báo lỗi sang tiếng Việt
+    function translateErrorToVietnamese(field, error) {
+        const translations = {
+            'username': {
+                'required': 'Vui lòng nhập tên đăng nhập',
+                'unique': 'Tên đăng nhập đã được sử dụng',
+                'min': 'Tên đăng nhập phải có ít nhất :min ký tự',
+                'max': 'Tên đăng nhập không được vượt quá :max ký tự'
+            },
+            'email': {
+                'required': 'Vui lòng nhập địa chỉ email',
+                'email': 'Địa chỉ email không hợp lệ',
+                'unique': 'Email đã được sử dụng'
+            },
+            'password': {
+                'required': 'Vui lòng nhập mật khẩu',
+                'min': 'Mật khẩu phải có ít nhất :min ký tự',
+                'confirmed': 'Xác nhận mật khẩu không khớp'
+            },
+            'phone': {
+                'required': 'Vui lòng nhập số điện thoại',
+                'regex': 'Số điện thoại không hợp lệ'
+            },
+            'full_name': {
+                'required': 'Vui lòng nhập họ và tên'
+            },
+            'agreeTerms': {
+                'required': 'Bạn phải đồng ý với điều khoản sử dụng'
+            },
+            'general': {
+                'Registration failed': 'Đăng ký không thành công'
+            }
+        };
 
-                // Clean up finished particles
-                const particles = element.querySelectorAll('.gold-particle');
-                particles.forEach(p => {
-                    if (getComputedStyle(p).opacity === '0') {
-                        p.remove();
-                        activeParticles--;
-                    }
-                });
+        // Tìm bản dịch phù hợp
+        if (translations[field] && translations[field][error]) {
+            return translations[field][error];
+        }
 
-                // Create new particles
-                for (let i = 0; i < 3 && activeParticles < maxParticles; i++) {
-                    activeParticles++;
-                    const particle = document.createElement('div');
-                    particle.className = 'gold-particle';
+        // Nếu không tìm thấy bản dịch, trả về thông báo gốc
+        return error;
+    }
 
-                    const size = Math.random() * 3 + 2; // Smaller particles
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    const duration = Math.random() * 1.5 + 1; // Shorter duration
+    // Tự động mở modal nếu có lỗi từ BE (trường hợp JS bị tắt)
+    @if ($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+            registerModal.show();
+        });
+    @endif
 
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    particle.style.backgroundColor = color;
-                    particle.style.left = `${x - rect.left + (Math.random() * 10 - 5)}px`;
-                    particle.style.top = `${y - rect.top + (Math.random() * 10 - 5)}px`;
-                    particle.style.opacity = '0.8';
-
-                    element.appendChild(particle);
-
-                    particle.animate([{
-                            transform: 'translate(0, 0) scale(1)',
-                            opacity: 0.8
-                        },
-                        {
-                            transform: `translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px) scale(0.2)`,
-                            opacity: 0
-                        }
-                    ], {
-                        duration: duration * 1000,
-                        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-                    }).onfinish = () => {
-                        particle.remove();
-                        activeParticles--;
-                    };
-                }
+    // Add ripple effect to dropdown items
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') {
+                e.preventDefault();
             }
 
-            // Optimized cart button click effect
-            document.querySelectorAll('.cart-btn').forEach(btn => {
-                let clickTimeout;
+            const rect = this.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            ripple.className = 'gold-ripple';
+            ripple.style.left = `${e.clientX - rect.left}px`;
+            ripple.style.top = `${e.clientY - rect.top}px`;
+            this.appendChild(ripple);
 
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    // Clear any pending animations
-                    if (clickTimeout) clearTimeout(clickTimeout);
-
-                    // Remove existing ripples
-                    const ripples = btn.querySelectorAll('.gold-ripple');
-                    ripples.forEach(r => r.remove());
-
-                    // Create new ripple
-                    const ripple = document.createElement('span');
-                    ripple.className = 'gold-ripple';
-                    const size = Math.max(btn.offsetWidth, btn.offsetHeight);
-                    ripple.style.width = ripple.style.height = `${size}px`;
-                    ripple.style.left = `${e.offsetX - size/2}px`;
-                    ripple.style.top = `${e.offsetY - size/2}px`;
-                    btn.appendChild(ripple);
-
-                    // Remove ripple after animation
-                    clickTimeout = setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-
-                    // Thực tế bạn sẽ mở modal giỏ hàng ở đây
-                    console.log('Mở giỏ hàng');
-                });
-            });
-
-            // Animate elements on scroll
-            const animateOnScroll = () => {
-                const elements = document.querySelectorAll('.animate__animated');
-                elements.forEach(element => {
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const screenPosition = window.innerHeight / 1.2;
-                    if (elementPosition < screenPosition) {
-                        element.classList.add('animate__fadeInRight');
-                    }
-                });
-            };
-            // Thêm active class cho menu item tương ứng với trang hiện tại
-            const currentUrl = window.location.href;
-            document.querySelectorAll('.nav-link').forEach(link => {
-                if (link.href === currentUrl) {
-                    link.closest('.nav-item').classList.add('active');
-                }
-            });
-
-            window.addEventListener('scroll', animateOnScroll);
-            animateOnScroll(); // Run once on load
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
         });
-    </script>
-</body>
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.luxury-navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+</script>

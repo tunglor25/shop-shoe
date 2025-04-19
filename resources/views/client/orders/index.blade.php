@@ -29,9 +29,21 @@
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <h5 class="text-gold mb-0" style="font-family: 'Playfair Display', serif;">
-                                    <i class="fas fa-hashtag text-gold-soft me-2"></i> ĐƠN HÀNG #{{ $order->id }}
+                                    <i class="fas fa-hashtag text-gold-soft me-2"></i> MÃ ĐƠN HÀNG #{{ $order->id }}
                                 </h5>
-                                <span class="badge bg-gold text-dark">{{ ucfirst($order->status) }}</span>
+                                <span class="badge bg-gold text-dark">
+                                    @if ($order->status == 'pending')
+                                        ĐANG XỬ LÝ
+                                    @elseif($order->status == 'processing')
+                                        ĐANG XỬ LÝ
+                                    @elseif($order->status == 'shipped')
+                                        ĐANG VẬN CHUYỂN
+                                    @elseif($order->status == 'delivered')
+                                        ĐÃ GIAO HÀNG
+                                    @elseif($order->status == 'cancelled')
+                                        ĐÃ HỦY
+                                    @endif
+                                </span>
                             </div>
 
                             <div class="order-info-grid mb-4">
@@ -92,18 +104,6 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 100%);
-        }
-
-        :root {
-            --primary: #0a1d37;
-            --secondary: #ffd700;
-            --accent: #00c2ff;
-            --text: #f8f8f8;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-
-        .container {
             background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 100%);
         }
 

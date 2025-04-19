@@ -39,7 +39,7 @@
 
             <li class="nav-item mb-2">
                 <a class="nav-link d-flex align-items-center {{ request()->is('users*') ? 'active' : '' }}"
-                    href="{{ url('/users') }}">
+                    href="{{ route('admin.users.index') }}">
                     <i class="fas fa-users me-3 text-gold"></i>
                     <span class="text-gold">Customers</span>
                 </a>
