@@ -1,3 +1,13 @@
+<?php
+// nếu người dùng đã đăng nhập, lấy thông tin avatar từ session
+if (Auth::check()) {
+    $user = Auth::user();
+    $avatar = $user->avatar; // Giả sử bạn đã lưu đường dẫn avatar trong trường 'avatar' của bảng users
+} else {
+    $avatar = null; // Nếu chưa đăng nhập, không có avatar
+}
+
+?>
 <!DOCTYPE html>
 <html lang="vi">
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Slide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,11 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $title = 'Trang Danh Sách Sản Phẩm';
-        // Lấy sản phẩm có trạng thái là 1 (hoạt động) và danh mục hoạt động\
-        // dd(Auth::user()->avatar);
-        $query = Product::with(['category' => function($q) {
-                $q->where('status', 1);
-            }])
+
+        // Main products query
+        $query = Product::with(['category' => function ($q) {
+            $q->where('status', 1);
+        }])
             ->where('status', 1);
 
         if ($request->has('search')) {
@@ -34,18 +35,41 @@ class ProductController extends Controller
             });
         }
 
-        // Chỉ lấy danh mục đang hoạt động
+        // Get active categories
         $categories = Category::where('status', 1)->get();
 
-        // chỉ lấy slide đang hoạt động
+        // Get active slides
         $slides = Slide::where('status', 1)
             ->orderByDesc('id')
             ->get();
-            // dd($slides);
 
+        // Get most viewed products (8 sản phẩm xem nhiều nhất)
+        $mostViewedProducts = Product::where('status', 1)
+            ->orderByDesc('views')
+            ->limit(8)
+            ->get();
+
+        // Get men's shoes products (8 sản phẩm giày nam)
+        $mensShoes = Product::whereHas('category', function ($q) {
+            $q->where('status', 1)
+                ->where('name', 'Dien thaoi');
+        })
+            ->where('status', 1)
+            ->orderByDesc('id')
+            ->limit(8)
+            ->get();
+
+        // Paginated products for main listing
         $products = $query->orderByDesc('id')->paginate(6);
 
-        return view('client.home', compact('title', 'products', 'categories', 'slides'));
+        return view('client.home', compact(
+            'title',
+            'products',
+            'categories',
+            'slides',
+            'mostViewedProducts',
+            'mensShoes'
+        ));
     }
 
     /**
@@ -53,23 +77,59 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        // Kiểm tra nếu sản phẩm hoặc danh mục không hoạt động thì redirect hoặc 404
+        // Tăng view count
+        $product->increment('views');
+
+        // Kiểm tra nếu sản phẩm hoặc danh mục không hoạt động
         if ($product->status != 1 || $product->category->status != 1) {
             abort(404);
         }
 
         $title = 'Trang chi tiết sản phẩm';
 
-        // Lấy sản phẩm cùng loại, đang hoạt động và danh mục hoạt động
+        // Lấy sản phẩm cùng loại
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('status', 1)
-            ->whereHas('category', function($q) {
+            ->whereHas('category', function ($q) {
                 $q->where('status', 1);
             })
             ->where('id', '!=', $product->id)
             ->get();
 
-        return view('client.detail', compact('title', 'product', 'relatedProducts'));
+        // Lấy các bình luận với user và avatar
+        $comments = $product->comments()
+            ->with([
+                'user',
+                'replies' => function ($q) {
+                    $q->where('status', 'active')->with('user');
+                }
+            ])
+            ->where('status', 'active')
+            ->whereNull('parent_id')
+            ->latest()
+            ->get();
+
+
+        return view('client.detail', compact('title', 'product', 'relatedProducts', 'comments'));
+    }
+
+    public function storeComment(Request $request, Product $product)
+    {
+        $request->validate([
+            'content' => 'required|string|max:1000',
+            'parent_id' => 'nullable|exists:comments,id'
+        ]);
+
+        $comment = new Comment([
+            'content' => $request->content,
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'parent_id' => $request->parent_id
+        ]);
+
+        $comment->save();
+
+        return back()->with('success', 'Bình luận đã được đăng thành công!');
     }
 
     // Phương thức tìm kiếm sản phẩm
@@ -103,16 +163,16 @@ class ProductController extends Controller
         }
 
         // Chỉ tìm kiếm sản phẩm và danh mục đang hoạt động
-        $query = Product::with(['category' => function($q) {
-                $q->where('status', 1);
-            }])
+        $query = Product::with(['category' => function ($q) {
+            $q->where('status', 1);
+        }])
             ->where('status', 1)
             ->where(function ($query) use ($searchTerm) {
                 $query->where('name', 'like', '%' . $searchTerm . '%')
                     ->orWhere('description', 'like', '%' . $searchTerm . '%')
                     ->orWhereHas('category', function ($q) use ($searchTerm) {
                         $q->where('status', 1)
-                          ->where('name', 'like', '%' . $searchTerm . '%');
+                            ->where('name', 'like', '%' . $searchTerm . '%');
                     });
             })
             ->whereBetween('price', [$minPrice, $maxPrice]);
@@ -144,9 +204,9 @@ class ProductController extends Controller
     public function shop(Request $request)
     {
         // Chỉ lấy sản phẩm và danh mục đang hoạt động
-        $query = Product::with(['category' => function($q) {
-                $q->where('status', 1);
-            }])
+        $query = Product::with(['category' => function ($q) {
+            $q->where('status', 1);
+        }])
             ->where('status', 1);
 
         // Lọc theo khoảng giá nếu có
@@ -198,33 +258,33 @@ class ProductController extends Controller
         ]);
     }
 
-    public function login( Request $request)
+    public function login(Request $request)
     {
         $title = 'Đăng Nhập';
-        $query = Product::with(['category' => function($q) {
+        $query = Product::with(['category' => function ($q) {
             $q->where('status', 1);
         }])
-        ->where('status', 1);
+            ->where('status', 1);
 
-    if ($request->has('search')) {
-        $search = $request->search;
-        $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', '%' . $search . '%')
-                ->orWhere('description', 'like', '%' . $search . '%');
-        });
-    }
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
 
-    // Chỉ lấy danh mục đang hoạt động
-    $categories = Category::where('status', 1)->get();
+        // Chỉ lấy danh mục đang hoạt động
+        $categories = Category::where('status', 1)->get();
 
-    // chỉ lấy slide đang hoạt động
-    $slides = Slide::where('status', 1)
-        ->orderByDesc('id')
-        ->get();
+        // chỉ lấy slide đang hoạt động
+        $slides = Slide::where('status', 1)
+            ->orderByDesc('id')
+            ->get();
         // dd($slides);
 
-    $products = $query->orderByDesc('id')->paginate(6);
+        $products = $query->orderByDesc('id')->paginate(6);
 
-    return view('client.login', compact('title', 'products', 'categories', 'slides'));
+        return view('client.login', compact('title', 'products', 'categories', 'slides'));
     }
 }

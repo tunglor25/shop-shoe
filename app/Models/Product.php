@@ -13,4 +13,10 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    // Thêm vào model Product
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id');
+    }
 }

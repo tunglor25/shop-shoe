@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SlideController as AdminSlideController;
 use App\Http\Controllers\Admin\UserController;
@@ -90,17 +91,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{order}/confirm', [ClientOrderController::class, 'confirm'])->name('orders.confirm');
     Route::post('/orders/{order}/cancel', [ClientOrderController::class, 'cancel'])->name('orders.cancel');
 
-     // Hiển thị trang quản lý tài khoản
-     Route::get('/my-account', [ClientUserAccountController::class, 'show'])->name('user.account');
+    // Hiển thị trang quản lý tài khoản
+    Route::get('/my-account', [ClientUserAccountController::class, 'show'])->name('user.account');
 
-     // Cập nhật thông tin cá nhân
-     Route::post('/my-account/update-info', [ClientUserAccountController::class, 'updateInfo'])->name('user.update-info');
+    // Cập nhật thông tin cá nhân
+    Route::post('/my-account/update-info', [ClientUserAccountController::class, 'updateInfo'])->name('user.update-info');
 
-     // Cập nhật avatar
-     Route::post('/my-account/update-avatar', [ClientUserAccountController::class, 'updateAvatar'])->name('user.update-avatar');
+    // Cập nhật avatar
+    Route::post('/my-account/update-avatar', [ClientUserAccountController::class, 'updateAvatar'])->name('user.update-avatar');
 
-     // Đổi mật khẩu
-     Route::post('/my-account/change-password', [ClientUserAccountController::class, 'changePassword'])->name('user.change-password');
+    // Đổi mật khẩu
+    Route::post('/my-account/change-password', [ClientUserAccountController::class, 'changePassword'])->name('user.change-password');
+    // bình luận
+    Route::post('/products/{product}/comments', [ClientProductController::class, 'storeComment'])->name('products.comments.store');
 });
 
 /*
@@ -136,4 +139,11 @@ Route::middleware(['auth', 'admin'])
         Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
         Route::put('users/{user}/toggle-ban', [UserController::class, 'toggleBan'])
             ->name('users.toggle-ban');
+
+        // Quản lý bình luận
+        Route::prefix('comments')->group(function () {
+            Route::get('/', [AdminCommentController::class, 'index'])->name('comments.index');
+            Route::put('/{comment}/toggle-status', [AdminCommentController::class, 'toggleStatus'])->name('comments.toggle-status');
+            Route::delete('/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
+        });
     });

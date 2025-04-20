@@ -37,6 +37,13 @@
                     <span>Orders</span>
                 </a>
             </li>
+            {{-- bình luận --}}
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center {{ request()->is('admin/comments*') ? 'active' : '' }}" href="{{ route('admin.comments.index') }}">
+                    <i class="fas fa-comments me-3"></i>
+                    <span>Comments</span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
