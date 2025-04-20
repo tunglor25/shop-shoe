@@ -5,10 +5,13 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CommentController as AdminCommentController;
+use App\Http\Controllers\Admin\NewsCategoryController as AdminNewsCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SlideController as AdminSlideController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\Client\NewsController as ClientNewsController;
 use App\Http\Controllers\Client\OrderController as ClientOrderController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
 use App\Http\Controllers\Client\CartController;
@@ -104,6 +107,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/my-account/change-password', [ClientUserAccountController::class, 'changePassword'])->name('user.change-password');
     // bình luận
     Route::post('/products/{product}/comments', [ClientProductController::class, 'storeComment'])->name('products.comments.store');
+    // Bài viết
+    Route::get('/tin-tuc', [ClientNewsController::class, 'index'])->name('news.index');
+    Route::get('/tin-tuc/{slug}', [ClientNewsController::class, 'show'])->name('news.show');
+    Route::get('/danh-muc/{slug}', [ClientNewsController::class, 'show'])->name('news-categories.show');
 });
 
 /*
@@ -146,4 +153,10 @@ Route::middleware(['auth', 'admin'])
             Route::put('/{comment}/toggle-status', [AdminCommentController::class, 'toggleStatus'])->name('comments.toggle-status');
             Route::delete('/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
         });
+
+        // News Categories
+        Route::resource('news-categories', AdminNewsCategoryController::class);
+
+        // News
+        Route::resource('news', AdminNewsController::class);
     });

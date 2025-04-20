@@ -44,6 +44,20 @@
                     <span>Comments</span>
                 </a>
             </li>
+            {{-- danh mục bài viết --}}
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center {{ request()->is('admin/news-categories*') ? 'active' : '' }}" href="{{ route('admin.news-categories.index') }}">
+                    <i class="fas fa-tags me-3"></i>
+                    <span>News Categories</span>
+                </a>
+            </li>
+            {{-- bài viết --}}
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center {{ request()->is('admin/news*') ? 'active' : '' }}" href="{{ route('admin.news.index') }}">
+                    <i class="fas fa-newspaper me-3"></i>
+                    <span>News</span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

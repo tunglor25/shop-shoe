@@ -596,7 +596,7 @@ if (Auth::check()) {
                     <a class="nav-link" href="{{ route('shop') }}">SẢN PHẨM</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">DỊCH VỤ</a>
+                    <a class="nav-link" href="{{ route('news.index') }}">TIN TỨC</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">BỘ SƯU TẬP</a>
