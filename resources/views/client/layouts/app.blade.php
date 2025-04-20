@@ -29,7 +29,6 @@ if (Auth::check()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
 
     <style>
-
         /* Thanh RGB dài full trang, màu nổi bật */
         #nprogress .bar {
             background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
@@ -50,7 +49,7 @@ if (Auth::check()) {
 </head>
 <!-- NProgress JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     // Cấu hình chạy nhanh và hết chiều dài luôn
@@ -94,13 +93,13 @@ if (Auth::check()) {
 <body>
     @include('client.layouts.partials.nav')
 
-        <div class="hehe container-fluid">
-            <div class="row">
-                <main class="py-4">
-                    @yield('content')
-                </main>
-            </div>
+    <div class="hehe container-fluid">
+        <div class="row">
+            <main class="py-4">
+                @yield('content')
+            </main>
         </div>
+    </div>
 
     @include('client.layouts.partials.footer')
 
@@ -148,7 +147,20 @@ if (Auth::check()) {
             });
         });
     </script>
-
+    <!-- Chatra {literal} -->
+    <script>
+        (function(d, w, c) {
+            w.ChatraID = 'AFKaph7yY6GpssNp9';
+            var s = d.createElement('script');
+            w[c] = w[c] || function() {
+                (w[c].q = w[c].q || []).push(arguments);
+            };
+            s.async = true;
+            s.src = 'https://call.chatra.io/chatra.js';
+            if (d.head) d.head.appendChild(s);
+        })(document, window, 'Chatra');
+    </script>
+    <!-- /Chatra {/literal} -->
 
     @yield('scripts')
     @stack('scripts')
