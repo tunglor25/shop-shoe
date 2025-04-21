@@ -1,4 +1,4 @@
-@extends('layouts.client')
+@extends('client.layouts.app')
 
 @section('content')
 <div class="container news-container">
@@ -8,8 +8,8 @@
             <div class="news-header">
                 <h1 class="news-title">{{ $news->title }}</h1>
                 <div class="news-meta">
-                    <span class="publish-date">Ngày đăng: {{ $news->published_at->format('d/m/Y H:i') }}</span> |
-                    <span class="category">Danh mục: <a href="{{ route('client.news-categories.show', $news->category->slug) }}">{{ $news->category->name }}</a></span> |
+                    <span class="publish-date">Ngày đăng: {{ $news->published_at}}</span> |
+                    <span class="category">Danh mục: <a href="{{ route('news-categories.show', $news->category->slug) }}">{{ $news->category->name }}</a></span> |
                     <span class="views"><i class="fas fa-eye"></i> {{ $news->views }} lượt xem</span>
                 </div>
             </div>
@@ -35,8 +35,8 @@
                             @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{ $item->title }}</h5>
-                                <p class="card-text"><small class="text-muted">{{ $item->published_at->format('d/m/Y') }}</small></p>
-                                <a href="{{ route('client.news.show', $item->slug) }}" class="stretched-link"></a>
+                                <p class="card-text"><small class="text-muted">{{ $item->published_at }}</small></p>
+                                <a href="{{ route('news.show', $item->slug) }}" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>
@@ -63,8 +63,8 @@
                 <div class="latest-news-list">
                     @foreach($latestNews as $item)
                     <div class="latest-news-item">
-                        <a href="{{ route('client.news.show', $item->slug) }}">{{ $item->title }}</a>
-                        <div><small class="text-muted">{{ $item->published_at->format('d/m/Y') }}</small></div>
+                        <a href="{{ route('news.show', $item->slug) }}">{{ $item->title }}</a>
+                        <div><small class="text-muted">{{ $item->published_at}}</small></div>
                     </div>
                     @endforeach
                 </div>
@@ -76,7 +76,7 @@
                 <div class="category-list">
                     @foreach($categories as $category)
                     <div class="latest-news-item d-flex justify-content-between align-items-center">
-                        <a href="{{ route('client.news-categories.show', $category->slug) }}">{{ $category->name }}</a>
+                        <a href="{{ route('news-categories.show', $category->slug) }}">{{ $category->name }}</a>
                         <span class="badge bg-warning text-dark">{{ $category->news_count }}</span>
                     </div>
                     @endforeach

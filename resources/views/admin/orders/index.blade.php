@@ -86,10 +86,6 @@
                                                class="btn btn-sm btn-outline-gold" title="Xem chi tiết">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.orders.edit', $order) }}"
-                                               class="btn btn-sm btn-outline-gold" title="Cập nhật">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
                                         </div>
                                     </td>
                                 </tr>

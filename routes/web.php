@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CommentController as AdminCommentController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsCategoryController as AdminNewsCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -33,6 +34,11 @@ Route::get('/', [ClientProductController::class, 'index'])->name('home');
 Route::get('/shop', [ClientProductController::class, 'shop'])->name('shop');
 Route::get('/search', [ClientProductController::class, 'search'])->name('search');
 Route::get('/products/{product}', [ClientProductController::class, 'show'])->name('products.show');
+
+// Bài viết
+Route::get('/tin-tuc', [ClientNewsController::class, 'index'])->name('news.index');
+Route::get('/tin-tuc/{slug}', [ClientNewsController::class, 'show'])->name('news.show');
+Route::get('/danh-muc/{slug}', [ClientNewsController::class, 'show'])->name('news-categories.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -107,10 +113,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/my-account/change-password', [ClientUserAccountController::class, 'changePassword'])->name('user.change-password');
     // bình luận
     Route::post('/products/{product}/comments', [ClientProductController::class, 'storeComment'])->name('products.comments.store');
-    // Bài viết
-    Route::get('/tin-tuc', [ClientNewsController::class, 'index'])->name('news.index');
-    Route::get('/tin-tuc/{slug}', [ClientNewsController::class, 'show'])->name('news.show');
-    Route::get('/danh-muc/{slug}', [ClientNewsController::class, 'show'])->name('news-categories.show');
 });
 
 /*
@@ -124,10 +126,8 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
         // Trang dashboard của admin
-        Route::get('/', function () {
-            return view('admin.Dashboard');
-        })->name('dashboard');
-
+            Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+            Route::post('/dashboard/filter', [DashboardController::class, 'filter'])->name('dashboard.filter');
         // Resource route cho quản lý danh mục (CRUD)
         Route::resource('categories', AdminCategoryController::class);
 
