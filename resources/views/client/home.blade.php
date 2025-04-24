@@ -163,7 +163,7 @@
                                         <div class="d-flex justify-content-between align-items-center"
                                             style="margin-bottom: 15px;">
                                             <span class="h5 mb-0"
-                                                style="color: #d4af37; font-weight: 700;">$<?= $product['price'] ?></span>
+                                                style="color: #d4af37; font-weight: 700;">{{ number_format($product->price) }}₫</span>
                                             <div style="display: flex; align-items: center;">
                                                 <div style="color: #d4af37; margin-right: 5px;">
                                                     <i class="bi bi-star-fill"></i>
@@ -178,9 +178,25 @@
                                     </div>
                                     <div class="card-footer d-flex justify-content-between"
                                         style="background: white; border-top: 1px solid rgba(0,0,0,0.05); padding: 15px 20px;">
-                                        <button class="btn btn-sm"
-                                            style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.9) 0%, rgba(212, 175, 55, 0.7) 100%); color: white; border: none; border-radius: 6px; padding: 8px 15px; font-weight: 500;">Add
-                                            to Cart</button>
+                                        <form action="{{ route('cart.add', $product->id) }}" method="POST" style="width: 100%; margin-right: 10px;">
+                                            @csrf
+                                            <input type="hidden" name="quantity" value="1">
+                                            <button type="submit" class="cartBtn" style="width: 100%;">
+                                                <svg class="cart" fill="white" viewBox="0 0 576 512" height="1em"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z">
+                                                    </path>
+                                                </svg>
+                                                Thêm vào giỏ
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"
+                                                    class="product">
+                                                    <path
+                                                        d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </form>
                                         <button class="btn btn-outline-secondary btn-sm"
                                             style="border: 1px solid #d4af37; color: #d4af37; border-radius: 6px; padding: 8px 10px;"><i
                                                 class="bi bi-heart"></i></button>
@@ -264,9 +280,25 @@
                                     </div>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <button
-                                        style="padding: 8px 15px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.9) 0%, rgba(212, 175, 55, 0.7) 100%); color: #1a1a1a; border: none; border-radius: 6px; font-weight: 600; flex: 1; margin-right: 10px;">Thêm
-                                        vào giỏ</button>
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" style="width: 100%; margin-right: 10px;">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="cartBtn" style="width: 100%;">
+                                            <svg class="cart" fill="white" viewBox="0 0 576 512" height="1em"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z">
+                                                </path>
+                                            </svg>
+                                            Thêm vào giỏ
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"
+                                                class="product">
+                                                <path
+                                                    d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </form>
                                     <button
                                         style="padding: 8px; border: 1px solid #d4af37; color: #d4af37; background: transparent; border-radius: 6px; width: 40px; display: flex; align-items: center; justify-content: center;">
                                         <i class="bi bi-heart"></i>
@@ -329,9 +361,25 @@
                                     </div>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <button
-                                        style="padding: 8px 15px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.9) 0%, rgba(212, 175, 55, 0.7) 100%); color: #1a1a1a; border: none; border-radius: 6px; font-weight: 600; flex: 1; margin-right: 10px;">Thêm
-                                        vào giỏ</button>
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" style="width: 100%; margin-right: 10px;">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="cartBtn" style="width: 100%;">
+                                            <svg class="cart" fill="white" viewBox="0 0 576 512" height="1em"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z">
+                                                </path>
+                                            </svg>
+                                            Thêm vào giỏ
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"
+                                                class="product">
+                                                <path
+                                                    d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </form>
                                     <button
                                         style="padding: 8px; border: 1px solid #d4af37; color: #d4af37; background: transparent; border-radius: 6px; width: 40px; display: flex; align-items: center; justify-content: center;">
                                         <i class="bi bi-heart"></i>
@@ -367,7 +415,7 @@
                     <div class="col-6 col-md-4 col-lg-2-4 mb-4">
                         <div class="card product-card shadow-sm luxury-card h-100">
                             <div class="position-relative overflow-hidden">
-                                <span class="badge bg-gold badge-floating">LIMITED EDITION</span>
+                                <span class="badge bg-gold badge-floating">Bản giới hạn</span>
                                 <div class="image-container">
                                     <img src="{{ $item->image ? asset('storage/' . $item->image) : asset('storage/default-image.png') }}"
                                         class="product-image card-img-top" alt="{{ $item->name }}">
@@ -410,16 +458,33 @@
 
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
-                                        <span class="text-gold h5 mb-0">${{ number_format($item->price, 2) }}</span>
-                                        <span class="text-muted small d-block">VAT included</span>
+                                        <span class="text-gold h5 mb-0">{{ number_format($item->price) }}₫</span>
+                                        <span class="text-muted small d-block">Đã tính VAT</span>
                                     </div>
-                                    <span class="badge bg-danger small">ONLY 3 LEFT</span>
+                                    <span class="badge bg-danger small">Chỉ còn 3 ngày</span>
                                 </div>
 
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-dark btn-luxury btn-sm">
-                                        <i class="fas fa-lock me-1"></i>SECURE CHECKOUT
-                                    </button>
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST"
+                                        style="width: 100%; margin-right: 10px;">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="cartBtn" style="width: 100%;">
+                                            <svg class="cart" fill="white" viewBox="0 0 576 512" height="1em"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z">
+                                                </path>
+                                            </svg>
+                                            Thêm vào giỏ
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"
+                                                class="product">
+                                                <path
+                                                    d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </form>
                                     <button class="btn btn-outline-dark btn-sm">
                                         <i class="fas fa-heart me-1"></i>WISHLIST
                                     </button>

@@ -59,6 +59,9 @@ class ProductController extends Controller
             ->limit(8)
             ->get();
 
+            // lấy số lượng sản phẩm trong giỏ hàng
+
+
         // Paginated products for main listing
         $products = $query->orderByDesc('id')->paginate(6);
 

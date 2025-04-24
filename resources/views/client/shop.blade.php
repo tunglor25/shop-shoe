@@ -52,14 +52,14 @@
                                             @if ($item->discount)
                                                 <div>
                                                     <span class="fw-bold text-danger">
-                                                        ${{ number_format($item->price - ($item->price * $item->discount) / 100, 2) }}
+                                                        {{ number_format($item->price - ($item->price * $item->discount) / 100) }}₫
                                                     </span>
                                                     <span class="text-muted text-decoration-line-through ms-2">
-                                                        ${{ number_format($item->price, 2) }}
+                                                        {{ number_format($item->price) }}₫
                                                     </span>
                                                 </div>
                                             @else
-                                                <span class="fw-bold">${{ number_format($item->price, 2) }}</span>
+                                                <span class="fw-bold">{{ number_format($item->price) }}₫</span>
                                             @endif
                                         </div>
                                     </div>

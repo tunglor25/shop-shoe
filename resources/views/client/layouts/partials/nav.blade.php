@@ -8,6 +8,14 @@ if (Auth::check()) {
 }
 // @dd($needLogin)
 
+$cartCount = 0;
+if (Auth::check()) {
+
+    if (Auth::check()) {
+        $cartCount = Auth::user()->carts->sum('quantity');
+    }
+}
+// @dd($cartCount);
 ?>
 
 
@@ -629,7 +637,7 @@ if (Auth::check()) {
                 <a href="http://127.0.0.1:8000/cart" class="nav-action cart-btn-animate">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Giỏ hàng</span>
-                    {{-- <span class="cart-count">{{ Cart::count() }}</span> --}}
+                    <span class="cart-count">{{ $cartCount }}</span>
                 </a>
 
                 <!-- Phần nút đăng nhập/đăng xuất -->
@@ -653,7 +661,8 @@ if (Auth::check()) {
                             <li class="dropdown-header">
                                 <div class="d-flex align-items-center">
                                     @if (asset('storage/' . $avatar))
-                                        <img src="{{ asset('storage/' . $avatar) }}" class="user-avatar me-2" alt="User Avatar">
+                                        <img src="{{ asset('storage/' . $avatar) }}" class="user-avatar me-2"
+                                            alt="User Avatar">
                                     @else
                                         <div class="avatar-placeholder me-2">
                                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
