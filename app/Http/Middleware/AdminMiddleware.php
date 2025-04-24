@@ -13,12 +13,14 @@ class AdminMiddleware
     {
         // sử dụng auth để check đã đăng nhập hay chưa
         if(!Auth::check()){
-            return redirect('/');
+            return redirect()->back()->with('needLogin', true);
+
         }
 
         // check phân quyền của admin
         if(Auth::user()->role !== 'admin'){
-            return redirect('/')->with('messageLogin','Bạn không đủ quyền truy cập !!');
+            // trả về trang 403
+            return response()->view('errors.403', [], 403);
         }
         return $next($request);
     }

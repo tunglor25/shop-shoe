@@ -260,7 +260,9 @@ class ProductController extends Controller
 
     public function login(Request $request)
     {
-        $title = 'Đăng Nhập';
+        $title = 'Trang Danh Sách Sản Phẩm';
+
+        // Main products query
         $query = Product::with(['category' => function ($q) {
             $q->where('status', 1);
         }])
@@ -274,17 +276,42 @@ class ProductController extends Controller
             });
         }
 
-        // Chỉ lấy danh mục đang hoạt động
+        // Get active categories
         $categories = Category::where('status', 1)->get();
 
-        // chỉ lấy slide đang hoạt động
+        // Get active slides
         $slides = Slide::where('status', 1)
             ->orderByDesc('id')
             ->get();
-        // dd($slides);
 
+        // Get most viewed products (8 sản phẩm xem nhiều nhất)
+        $mostViewedProducts = Product::where('status', 1)
+            ->orderByDesc('views')
+            ->limit(8)
+            ->get();
+
+        // Get men's shoes products (8 sản phẩm giày nam)
+        $mensShoes = Product::whereHas('category', function ($q) {
+            $q->where('status', 1)
+                ->where('name', 'Dien thaoi');
+        })
+            ->where('status', 1)
+            ->orderByDesc('id')
+            ->limit(8)
+            ->get();
+
+        // Paginated products for main listing
         $products = $query->orderByDesc('id')->paginate(6);
 
-        return view('client.login', compact('title', 'products', 'categories', 'slides'));
+        session()->flash('needLogin', true);
+
+        return view('client.home', [
+            'title' => $title,
+            'products' => $products,
+            'categories' => $categories,
+            'slides' => $slides,
+            'mostViewedProducts' => $mostViewedProducts,
+            'mensShoes' => $mensShoes,
+        ]);
     }
 }

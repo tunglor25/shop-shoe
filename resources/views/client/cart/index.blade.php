@@ -118,13 +118,29 @@
                                 <span class="text-light">Tổng cộng:</span>
                                 <span class="text-gold" style="font-size: 1.25rem;">{{ number_format($total) }}đ</span>
                             </div>
-                            <a href="{{ route('checkout') }}" class="btn btn-gold w-100 py-3 mb-3">
-                                <span class="position-relative">
-                                    <i class="bi bi-credit-card me-2"></i>
-                                    <span class="gold-text">THANH TOÁN</span>
-                                    <span class="gold-glow"></span>
-                                </span>
-                            </a>
+
+                            <!-- New Payment Button -->
+                            <div class="luxury-payment-btn mb-3" onclick="window.location.href='{{ route('checkout') }}'">
+                                <div class="left-side">
+                                    <div class="card">
+                                        <div class="card-line"></div>
+                                        <div class="buttons"></div>
+                                    </div>
+                                    <div class="post">
+                                        <div class="post-line"></div>
+                                        <div class="screen">
+                                            <div class="dollar">đ</div>
+                                        </div>
+                                        <div class="numbers"></div>
+                                        <div class="numbers-line2"></div>
+                                    </div>
+                                </div>
+                                <div class="right-side">
+                                    <div class="new">THANH TOÁN</div>
+                                    <svg viewBox="0 0 451.846 451.847" height="512" width="512" xmlns="http://www.w3.org/2000/svg" class="arrow"><path fill="#d4af37" data-old_color="#000000" class="active-path" data-original="#000000" d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"></path></svg>
+                                </div>
+                            </div>
+
                             <a href="{{ route('home') }}" class="btn btn-outline-gold w-100 py-3">
                                 <i class="bi bi-arrow-left me-2"></i> TIẾP TỤC MUA SẮM
                             </a>
@@ -262,6 +278,236 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* New Payment Button Styles */
+        .luxury-payment-btn {
+            background-color: #121212;
+            display: flex;
+            width: 100%;
+            height: 80px;
+            position: relative;
+            border-radius: 6px;
+            transition: 0.3s ease-in-out;
+            cursor: pointer;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .luxury-payment-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .luxury-payment-btn .left-side {
+            background-color: #d4af37;
+            width: 80px;
+            height: 80px;
+            border-radius: 4px 0 0 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .luxury-payment-btn:hover .left-side {
+            width: 100%;
+        }
+
+        .luxury-payment-btn .right-side {
+            width: calc(100% - 80px);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            justify-content: space-between;
+            white-space: nowrap;
+            transition: 0.3s;
+            background-color: #1a1a1a;
+            padding-left: 20px;
+            color: #d4af37;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        .luxury-payment-btn:hover .right-side {
+            background-color: #121212;
+        }
+
+        .luxury-payment-btn .arrow {
+            width: 20px;
+            height: 20px;
+            margin-right: 20px;
+            transition: 0.3s;
+        }
+
+        .luxury-payment-btn:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        .luxury-payment-btn .new {
+            font-size: 1.2rem;
+            font-family: 'Playfair Display', serif;
+            margin-left: 10px;
+        }
+
+        .luxury-payment-btn .card {
+            width: 50px;
+            height: 32px;
+            background-color: #f1e5ac;
+            border-radius: 4px;
+            position: absolute;
+            display: flex;
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .luxury-payment-btn .card-line {
+            width: 45px;
+            height: 10px;
+            background-color: #d4af37;
+            border-radius: 2px;
+            margin-top: 5px;
+        }
+
+        .luxury-payment-btn .buttons {
+            width: 6px;
+            height: 6px;
+            background-color: #a78a2e;
+            box-shadow: 0 -8px 0 0 #a78a2e, 0 8px 0 0 #a78a2e;
+            border-radius: 50%;
+            margin-top: 5px;
+            transform: rotate(90deg);
+            margin: 8px 0 0 -25px;
+        }
+
+        .luxury-payment-btn:hover .card {
+            animation: slide-top 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) both;
+        }
+
+        .luxury-payment-btn:hover .post {
+            animation: slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+        }
+
+        @keyframes slide-top {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-50px) rotate(90deg);
+            }
+            60% {
+                transform: translateY(-50px) rotate(90deg);
+            }
+            100% {
+                transform: translateY(-5px) rotate(90deg);
+            }
+        }
+
+        .luxury-payment-btn .post {
+            width: 50px;
+            height: 60px;
+            background-color: #e0e0e0;
+            position: absolute;
+            z-index: 11;
+            bottom: 8px;
+            top: 80px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .luxury-payment-btn .post-line {
+            width: 40px;
+            height: 7px;
+            background-color: #444;
+            position: absolute;
+            border-radius: 0 0 2px 2px;
+            right: 5px;
+            top: 5px;
+        }
+
+        .luxury-payment-btn .post-line:before {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 7px;
+            background-color: #666;
+            top: -7px;
+        }
+
+        .luxury-payment-btn .screen {
+            width: 40px;
+            height: 18px;
+            background-color: #f8f8f8;
+            position: absolute;
+            top: 18px;
+            right: 5px;
+            border-radius: 2px;
+        }
+
+        .luxury-payment-btn .numbers {
+            width: 10px;
+            height: 10px;
+            background-color: #777;
+            box-shadow: 0 -15px 0 0 #777, 0 15px 0 0 #777;
+            border-radius: 2px;
+            position: absolute;
+            transform: rotate(90deg);
+            left: 20px;
+            top: 42px;
+        }
+
+        .luxury-payment-btn .numbers-line2 {
+            width: 10px;
+            height: 10px;
+            background-color: #999;
+            box-shadow: 0 -15px 0 0 #999, 0 15px 0 0 #999;
+            border-radius: 2px;
+            position: absolute;
+            transform: rotate(90deg);
+            left: 20px;
+            top: 55px;
+        }
+
+        @keyframes slide-post {
+            50% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50px);
+            }
+        }
+
+        .luxury-payment-btn .dollar {
+            position: absolute;
+            font-size: 14px;
+            font-family: 'Playfair Display', serif;
+            width: 100%;
+            left: 0;
+            top: 2px;
+            color: #a78a2e;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .luxury-payment-btn:hover .dollar {
+            animation: fade-in-fwd 0.3s 1s backwards;
+        }
+
+        @keyframes fade-in-fwd {
+            0% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 

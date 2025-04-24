@@ -71,7 +71,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['client'])->group(function () {
     // Trang dashboard của client
     Route::get('/list', function () {
         return view('client.list');
@@ -121,7 +121,7 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'admin'])
+Route::middleware(['auth','admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {

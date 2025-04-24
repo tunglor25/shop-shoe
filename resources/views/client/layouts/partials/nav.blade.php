@@ -1,11 +1,12 @@
 <?php
-// nếu người dùng đã đăng nhập, lấy thông tin avatar từ session
+
 if (Auth::check()) {
     $user = Auth::user();
     $avatar = $user->avatar; // Giả sử bạn đã lưu đường dẫn avatar trong trường 'avatar' của bảng users
 } else {
     $avatar = null; // Nếu chưa đăng nhập, không có avatar
 }
+// @dd($needLogin)
 
 ?>
 
@@ -19,6 +20,8 @@ if (Auth::check()) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- Animate.css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<!-- Đảm bảo bạn đã thêm thư viện này trước thẻ đóng </body> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
     :root {
@@ -629,26 +632,36 @@ if (Auth::check()) {
                     {{-- <span class="cart-count">{{ Cart::count() }}</span> --}}
                 </a>
 
-                <!-- Phần đăng nhập/đăng xuất -->
+                <!-- Phần nút đăng nhập/đăng xuất -->
                 @auth
                     <div class="dropdown user-dropdown ms-2">
                         <button class="btn dropdown-toggle d-flex align-items-center py-2 px-3" type="button"
                             id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- Hiển thị avatar nếu có -->
-                            <img src="{{ $avatar ? asset('storage/' . $avatar) : asset('storage/default-image.png') }}"
-                                class="user-avatar me-2" alt="User Avatar">
-                            <span class="d-none d-lg-inline">{{ Auth::user()->name }}</span>
+                            @if ($avatar)
+                                <img src="{{ asset('storage/' . $avatar) }}" class="user-avatar me-2" alt="User Avatar">
+                            @else
+                                <div class="avatar-placeholder me-2">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <span class="d-none d-lg-inline">{{ auth()->user()->name }}</span>
                         </button>
 
                         <!-- Dropdown menu -->
                         <ul class="dropdown-menu dropdown-menu-luxury dropdown-menu-end" aria-labelledby="userDropdown">
                             <li class="dropdown-header">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $avatar ? asset('storage/' . $avatar) : asset('storage/default-image.png') }}"
-                                        class="user-avatar me-2" alt="User Avatar">
+                                    @if (asset('storage/' . $avatar))
+                                        <img src="{{ asset('storage/' . $avatar) }}" class="user-avatar me-2" alt="User Avatar">
+                                    @else
+                                        <div class="avatar-placeholder me-2">
+                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                     <div>
-                                        <h6 class="mb-0">{{ Auth::user()->name }}</h6>
-                                        <small class="text-gold">{{ Auth::user()->email }}</small>
+                                        <h6 class="mb-0">{{ auth()->user()->name }}</h6>
+                                        <small class="text-gold">{{ auth()->user()->email }}</small>
                                     </div>
                                 </div>
                             </li>
@@ -656,7 +669,7 @@ if (Auth::check()) {
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('user.account') }}">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-user-circle me-2"></i>Trang cá nhân
                                 </a>
                             </li>
@@ -1115,5 +1128,22 @@ if (Auth::check()) {
         } else {
             navbar.classList.remove('scrolled');
         }
+    });
+
+    // Tự động mở modal đăng nhập nếu có thông báo từ session
+    document.addEventListener('DOMContentLoaded', function() {
+        @if (session('needLogin'))
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+
+            // Thêm thông báo vào modal
+            const modalBody = document.querySelector('#loginModal .modal-body');
+            if (!document.querySelector('#loginModal .alert.alert-warning')) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-warning';
+                alertDiv.textContent = 'Bạn cần đăng nhập để thực hiện yêu cầu';
+                modalBody.insertBefore(alertDiv, modalBody.firstChild);
+            }
+        @endif
     });
 </script>
